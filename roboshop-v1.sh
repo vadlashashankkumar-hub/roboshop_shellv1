@@ -17,7 +17,7 @@ do
     --output text
     )
 
-    echo "$instace instace id:$instance_id"
+    echo "$instance instace id:$instance_id"
 
     
 done
