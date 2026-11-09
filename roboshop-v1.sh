@@ -33,6 +33,9 @@ do
     --output text)
 
     echo "$instance Public ip:$publicIp"
+
+    fi
+    
 done
 
 
