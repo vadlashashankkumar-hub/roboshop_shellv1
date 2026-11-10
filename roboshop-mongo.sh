@@ -1,7 +1,7 @@
 #!/bin/bash
 
 user_id=$(id -u)
-logs_folder="/var/log/roboshop"
+log_folder="/var/log/roboshop"
 log_file="${log_folder}/${0}.log"
 #these are colour codes
 R="\e[31m"
@@ -16,14 +16,16 @@ fi
 
 mkdir -p $log_folder
 
-timestamp(){
+timestamp()
+{
     date "+%F %T"
 }
 
 
-Validate(){ #function
-    if [ $1 -ne 0]; then
-        echo -e "${2}..${R}FAILED${N}" | tee -a $logs_file #tee is used to display logs on scree as well as sloring in log file
+Validate()  #function
+{ 
+    if [ $1 -ne 0 ]; then
+        echo -e "${2}..${R}FAILED${N}" | tee -a $log_file #tee is used to display logs on scree as well as sloring in log file
         exit 1
     else
         echo -e "${2}...${G}SUCCESS${N}" | tee -a $log_file
