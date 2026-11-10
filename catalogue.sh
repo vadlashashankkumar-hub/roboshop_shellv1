@@ -3,6 +3,7 @@
 user_id=$(id -u)
 log_folder="/var/log/roboshop"
 log_file="${log_folder}/${0}.log"
+script_dir=$(dirname "$(realpath "$0")")
 #these are colour codes
 R="\e[31m"
 G="\e[32m"
@@ -59,8 +60,9 @@ Validate $? "Unzipping catalogue"
 npm install &>> $log_file
 Validate $? "Installing dependencies"
 
-sed -i "s/DOMAIN_NAME/$domain_name" catalogue.service
-cp catalogue.service vim /etc/systemd/system/catalogue.service
+
+sed -i "s/DOMAIN_NAME/$domain_name" "$script_dir/catalogue.service"
+cp "$script_dir/catalogue.service" vim /etc/systemd/system/catalogue.service
 Validate $? "Updated catalogue.service file"
 
 systemctl daemon-reload &>> $log_file
