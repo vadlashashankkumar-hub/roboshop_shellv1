@@ -29,7 +29,7 @@ Validate()  #function
         exit 1
     else
         echo -e "${2}...${G}SUCCESS${N}" | tee -a $log_file
-
+    fi
 }
 
 echo "[INFO]===Script started execution at $(timestamp)===" &>> log_file # this is save the output of the command in log file.
