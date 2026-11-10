@@ -40,6 +40,7 @@ dnf install nodejs -y &>> $log_file
 Validate $? "Installing NodeJS:24"
 
 node -v | tee -a $log_file
+id roboshop &>> $log_file
 if [ $? != 0 ]; then
 
     useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
@@ -61,8 +62,8 @@ npm install &>> $log_file
 Validate $? "Installing dependencies"
 
 
-sed -i "s/DOMAIN_NAME/$domain_name" "$script_dir/catalogue.service"
-cp "$script_dir/catalogue.service" vim /etc/systemd/system/catalogue.service
+sed -i "s/DOMAIN_NAME/$domain_name" $script_dir/catalogue.service
+cp $script_dir/catalogue.service vim /etc/systemd/system/catalogue.service
 Validate $? "Updated catalogue.service file"
 
 systemctl daemon-reload &>> $log_file
