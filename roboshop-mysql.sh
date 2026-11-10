@@ -43,3 +43,5 @@ Validate $? "Enable and start mysql"
 mysql_secure_installation --set-root-pass RoboShop@1
 Validate $? "Install Redis"
 
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
