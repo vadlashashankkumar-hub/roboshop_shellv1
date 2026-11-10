@@ -62,13 +62,8 @@ npm install &>> $log_file
 Validate $? "Installing dependencies"
 
 
-service_file="/etc/systemd/system/"
-
-cp "$script_dir/catalogue.service" "$service_file"
-Validate $? "Copying catalogue.service"
-
-sed -i "s|DOMAIN_NAME|${domain_name}|g" "$service_file"
-Validate $? "Updating catalogue.service"
+sed -i "s/DOMAIN_NAME/$domain_name" "$script_dir/catalogue.service"
+cp "$script_dir/catalogue.service" /etc/systemd/system/catalogue.service
 
 systemctl daemon-reload &>> $log_file
 systemctl enable catalogue &>> $log_file
