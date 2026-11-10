@@ -32,22 +32,22 @@ Validate()  #function
     fi
 }
 
-echo "[INFO]===Script started execution at $(timestamp)===" &>> log_file # this is save the output of the command in log file.
+echo "[INFO]===Script started execution at $(timestamp)===" &>> $log_file # this is save the output of the command in log file.
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo &>> log_file
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> $log_file
 Validate $? "Adding mongo repo"
 
-dnf install mongodb-org -y &>> log_file
+dnf install mongodb-org -y &>> $log_file
 Validate $? "Install mongodb"
 
-systemctl enable mongod &>> log_file
-systemctl start mongod &>> log_file
+systemctl enable mongod &>> $log_file
+systemctl start mongod &>> $log_file
 Validate $? "Enable and start mongod"
 
-sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> log_file
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> $log_file
 Validate $? "updating mongoDb configuration"
 
-systemctl restart mongod &>> log_file
+systemctl restart mongod &>> $log_file
 Validate $? "Restarting MongoD"
 
 systemctl status mongod | tee -a $log_file
