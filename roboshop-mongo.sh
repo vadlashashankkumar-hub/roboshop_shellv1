@@ -16,7 +16,10 @@ fi
 
 mkdir -p $log_folder
 
-echo "Script started execution at $(date +"%F %T")" &>> log_file # this is save the output of the command in log file.
+timestamp(){
+    date "+%F %T"
+}
+
 
 Validate(){ #function
     if [ $1 -ne 0]; then
@@ -27,13 +30,25 @@ Validate(){ #function
 
 }
 
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+echo "[INFO]===Script started execution at $(timestamp)===" &>> log_file # this is save the output of the command in log file.
+
+cp mongo.repo /etc/yum.repos.d/mongo.repo &>> log_file
 Validate $? "Adding mongo repo"
 
-dnf install mongodb-org -y
+dnf install mongodb-org -y &>> log_file
 Validate $? "Install mongodb"
 
-systemctl enable mongod
-systemctl start mongod
+systemctl enable mongod &>> log_file
+systemctl start mongod &>> log_file
 Validate $? "Enable and start mongod"
 
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf &>> log_file
+Validate $? "updating mongoDb configuration"
+
+systemctl restart mongod &>> log_file
+Validate $? "Restarting MongoD"
+
+systemctl status mongod | tee -a $log_file
+
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
