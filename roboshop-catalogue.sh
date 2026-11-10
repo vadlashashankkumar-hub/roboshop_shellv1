@@ -92,8 +92,8 @@ else
     echo -e "Product are already loaded ..${Y}SKIPPING${N}"
 fi
 
-systemctl restart calalogue
-    Validate $? "Restarting catalogue"
+systemctl restart catalogue
+Validate $? "Restarting catalogue"
 
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
