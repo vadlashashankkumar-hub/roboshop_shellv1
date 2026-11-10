@@ -30,7 +30,7 @@ Validate(){ #function
     fi
 }
 
-echo "[INFO]===Script started execution at $(timestamp)===" &>> $log_file # this is save the output of the command in log file.
+echo "$(timestamp) [INFO]===Script started execution at ===" &>> $log_file # this is save the output of the command in log file.
 
 dnf module enable mysql:8.4 -y &>> $log_file
 dnf install mysql-server -y &>> $log_file
