@@ -43,3 +43,6 @@ Validate $? "Updating configuration"
 systemctl enable redis | tee -a $log_file
 systemctl start redis | tee -a $log_file
 Validate $? "Enable and start redis"
+
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
