@@ -30,7 +30,7 @@ Validate(){ #function
     fi
 }
 
-echo "[INFO]===Script started execution at $(timestamp)===" &>> log_file # this is save the output of the command in log file.
+echo "$(timestamp) [INFO]===Script started execution at ===" 
 
 dnf module disable redis -y &>> $log_file
 dnf module enable redis:7 -y &>> $log_file
