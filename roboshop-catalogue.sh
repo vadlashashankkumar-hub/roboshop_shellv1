@@ -52,25 +52,31 @@ fi
 mkdir -p /app
 Validate $? "Creating App directory"
 
-curl -L -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
+curl -fL -o /tmp/catalogue.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip &>> $log_file
 Validate $? "Downloading catalogue"
 cd /app
-unzip /tmp/catalogue.zip &>> $log_file
+unzip -o /tmp/catalogue.zip &>> $log_file
 Validate $? "Unzipping catalogue"
 
 npm install &>> $log_file
 Validate $? "Installing dependencies"
 
 
-sed -i "s/DOMAIN_NAME/$domain_name" $script_dir/catalogue.service
-cp $script_dir/catalogue.service vim /etc/systemd/system/catalogue.service
-Validate $? "Updated catalogue.service file"
+service_file="/etc/systemd/system/catalogue.service"
+
+cp "$script_dir/catalogue.service" "$service_file"
+Validate $? "Copying catalogue.service"
+
+sed -i "s|DOMAIN_NAME|${domain_name}|g" "$service_file"
+Validate $? "Updating catalogue.service"
 
 systemctl daemon-reload &>> $log_file
 systemctl enable catalogue &>> $log_file
 systemctl start catalogue &>> $log_file
 Validate $? "Enable and start Catalogue"
 
+cp 
+dnf install mongodb-mongosh -y
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
 
