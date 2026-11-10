@@ -72,12 +72,12 @@ Validate $? "Cart.service edited"
 cp "$script_dir/cart.service" /etc/systemd/system/cart.service
 
 systemctl daemon-reload &>> $log_file
-systemctl enable user &>> $log_file
-systemctl start user &>> $log_file
+systemctl enable cart &>> $log_file
+systemctl start cart &>> $log_file
 Validate $? "Enable and start Cart"
 
 
-systemctl restart user
+systemctl restart cart
 Validate $? "Restarting cart"
 
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
