@@ -80,7 +80,19 @@ cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
 Validate $? "Adding mongoDB repo"
 
 dnf install mongodb-mongosh -y &>> $log_file
-Validate $? "Adding mongoDB client"
+Validate $? "installing mongoDB client"
+
+product_count=$(mongosh --host <MONGODB-SERVER-IPADDRESS> --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()' 2>> $log_file)
+Validate $? "connecting to mongoDB"
+if [ "$product_count" -eq 0 ]; then
+
+    mongosh --host "mongodb.$domain_name" </app/db/master-data.js &>> $log_file
+    Validate $? "Loading products"
+else
+    echo -e "Product are already loaded ..${Y}SKIPPING${N}"
+fi
+
+systemctl restart calalogue
 
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
