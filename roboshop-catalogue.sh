@@ -11,6 +11,8 @@ Y="\e[33m"
 N="\e[0m"
 domain_name="devopspractice.store"
 
+echo "script path:$script_dir"
+
 if [ $user_id -ne 0 ]; then
     echo "Please run this script with Sudo access"
     exit 1 #to exit the script if the user is normal user.
@@ -49,6 +51,9 @@ else
     echo -e "User already exist....${Y}SKIPPING${N}"
 fi
 
+rm -rf /app
+Validate $? "Removing old code"
+
 mkdir -p /app
 Validate $? "Creating App directory"
 
@@ -62,7 +67,8 @@ npm install &>> $log_file
 Validate $? "Installing dependencies"
 
 
-sed -i "s/DOMAIN_NAME/$domain_name" "$script_dir/catalogue.service"
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/catalogue.service"
+Validate $? "catalogue.service edited"
 cp "$script_dir/catalogue.service" /etc/systemd/system/catalogue.service
 
 systemctl daemon-reload &>> $log_file
@@ -70,8 +76,12 @@ systemctl enable catalogue &>> $log_file
 systemctl start catalogue &>> $log_file
 Validate $? "Enable and start Catalogue"
 
-cp 
-dnf install mongodb-mongosh -y
+cp "$script_dir/mongo.repo" /etc/yum.repos.d/mongo.repo
+Validate $? "Adding mongoDB repo"
+
+dnf install mongodb-mongosh -y &>> $log_file
+Validate $? "Adding mongoDB client"
+
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
 
