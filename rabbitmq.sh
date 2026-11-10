@@ -31,3 +31,19 @@ Validate(){ #function
 }
 
 echo "[INFO]===Script started execution at $(timestamp)===" &>> $log_file # this is save the output of the command in log file.
+
+cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>> $log_file
+Validate $? "Adding Rabbitmq repo"
+
+dnf install erlang rabbitmq-server -y &>> $log_file
+
+systemctl enable rabbitmq-server &>> $log_file
+systemctl start rabbitmq-server &>> $log_file
+Validate $? "Enable and start RabbitMQ"
+
+rabbitmqctl add_user roboshop roboshop123 &>> $log_file
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+
+rabbitmq-plugins enable rabbitmq_management &>> $log_file
+rabbitmqctl set_user_tags roboshop administrator &>> $log_file
+Validate $? "Create a user for the application"
