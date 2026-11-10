@@ -30,7 +30,7 @@ Validate(){ #function
     fi
 }
 
-echo "[INFO]===Script started execution at $(timestamp)===" &>> $log_file # this is save the output of the command in log file.
+echo "$(timestamp) [INFO]===Script started execution at ===" 
 
 cp rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo &>> $log_file
 Validate $? "Adding Rabbitmq repo"
