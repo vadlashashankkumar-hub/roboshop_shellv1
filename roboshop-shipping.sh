@@ -33,8 +33,8 @@ Validate(){ #function
 
 echo "$(timestamp) [INFO]===Script started execution at ===" 
 
-dnf module enable maven:3.9 -y
-dnf install maven java-25-openjdk-devel -y
+dnf module enable maven:3.9 -y &>> $log_file
+dnf install maven java-25-openjdk-devel -y &>> $log_file
 Validate $? "Installing Java and maven"
 
 alternatives --set java "/usr/lib/jvm/java-25-openjdk/bin/java"
@@ -63,7 +63,7 @@ Validate $? "Creating App directory"
 curl -L -o /tmp/shipping.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/shipping-v4.zip &>> $log_file
 Validate $? "Downloading shipping application"
 cd /app
-unzip /tmp/cart.zip &>> $log_file
+unzip /tmp/shipping.zip &>> $log_file
 Validate $? "Unzipping shipping.zip"
 
 
@@ -74,7 +74,7 @@ Validate $? "Installing dependencies"
 mv target/shipping.jar shipping.jar
 Validate $? "Moving Shipping.Jar file"
 
-dnf install mysql -y
+dnf install mysql -y &>> $log_file
 Validate $? "Installing Mysql client"
 
 #mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
@@ -83,9 +83,9 @@ Validate $? "Installing Mysql client"
 #mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
 #Validate $? "Moving Shipping.Jar file"
 
-sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service"
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service" &>> $log_file
 Validate $? "CShippingart.service edited"
-cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service
+cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service &>> $log_file
 
 systemctl daemon-reload &>> $log_file
 systemctl enable shipping &>> $log_file
@@ -94,7 +94,7 @@ Validate $? "Enable and start shipping"
 
 
 
-systemctl restart shipping
+systemctl restart shipping &>> $log_file
 Validate $? "Restarting shipping"
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
