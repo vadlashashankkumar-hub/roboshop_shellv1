@@ -3,12 +3,14 @@
 user_id=$(id -u)
 log_folder="/var/log/roboshop"
 log_file="${log_folder}/${0}.log"
+script_dir=$(dirname "$(realpath "$0")")
 #these are colour codes
 R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 domain_name="devopspractice.store"
+
 
 if [ $user_id -ne 0 ]; then
     echo "Please run this script with Sudo access"
@@ -32,6 +34,8 @@ Validate(){ #function
 }
 
 echo "$(timestamp) [INFO]===Script started execution at ===" 
+
+echo "script path:$script_dir"
 
 dnf module enable maven:3.9 -y &>> $log_file
 dnf install maven java-25-openjdk-devel -y &>> $log_file
@@ -84,7 +88,7 @@ Validate $? "Installing Mysql client"
 #Validate $? "Moving Shipping.Jar file"
 
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service" &>> $log_file
-Validate $? "CShippingart.service edited"
+Validate $? "Shipping.service edited"
 cp "$script_dir/shipping.service" /etc/systemd/system/shipping.service &>> $log_file
 
 systemctl daemon-reload &>> $log_file
