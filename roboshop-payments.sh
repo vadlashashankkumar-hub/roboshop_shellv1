@@ -74,8 +74,8 @@ Validate $? "payment.service edited"
 cp "$script_dir/payment.service" /etc/systemd/system/payment.service &>> $log_file
 
 systemctl daemon-reload &>> $log_file
-systemctl enable Payment &>> $log_file
-systemctl start Payment &>> $log_file
+systemctl enable payment &>> $log_file
+systemctl start payment &>> $log_file
 Validate $? "Enable and start payment"
 
 
