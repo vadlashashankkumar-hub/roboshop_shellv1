@@ -5,6 +5,17 @@ instance_type="t3.micro"
 domain_name="devopspractice.store"
 hosted_zone_id="Z0940775ZX40XOU2Z97T"
 
+
+
+Validate(){ #function
+    if [ $1 -ne 0 ]; then
+        echo -e "$(timestamp) [ERROR] ${2}..${R}FAILED${N}" | tee -a $log_file #tee is used to display logs on scree as well as sloring in log file
+        exit 1
+    else
+        echo -e "$(timestamp) [INFO] ${2}...${G}SUCCESS${N}" | tee -a $log_file
+    fi
+}
+
 for instance in $@
     do
         echo "creating instance $instance"
@@ -16,6 +27,7 @@ for instance in $@
         --query 'Instances[0].InstanceId' \
         --output text
         )
+        Validate $? "$instance instance created"
 
         echo "$instance instace id:$instance_id"
 
