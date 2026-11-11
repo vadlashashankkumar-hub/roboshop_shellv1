@@ -74,13 +74,13 @@ Validate $? "Payment.service edited"
 cp "$script_dir/Payment.service" /etc/systemd/system/Payment.service &>> $log_file
 
 systemctl daemon-reload &>> $log_file
-systemctl enable payment &>> $log_file
-systemctl start payment &>> $log_file
+systemctl enable Payment &>> $log_file
+systemctl start Payment &>> $log_file
 Validate $? "Enable and start payment"
 
 
 
-systemctl restart payment &>> $log_file
-Validate $? "Restarting payment"
+systemctl restart Payment &>> $log_file
+Validate $? "Restarting Payment"
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
