@@ -88,6 +88,7 @@ if [ -Z "$count" ] || [ "$count" -eq 0 ]: then
     Validate $? "Loading shipping data"
 else 
     echo -e "$(timestamp) [INFO] Master data alredy loaded....${Y}SKIPPING${N}"
+fi
 
 mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
 Validate $? "Creating App user"
