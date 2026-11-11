@@ -25,10 +25,10 @@ timestamp()
 Validate()  #function
 { 
     if [ $1 -ne 0 ]; then
-        echo -e "${2}..${R}FAILED${N}" | tee -a $log_file #tee is used to display logs on scree as well as sloring in log file
+        echo -e "$(timestamp) [ERROR] ${2}..${R}FAILED${N}" | tee -a $log_file #tee is used to display logs on scree as well as sloring in log file
         exit 1
     else
-        echo -e "${2}...${G}SUCCESS${N}" | tee -a $log_file
+        echo -e "$(timestamp) [INFO] ${2}...${G}SUCCESS${N}" | tee -a $log_file
     fi
 }
 
