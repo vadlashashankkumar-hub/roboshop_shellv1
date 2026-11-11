@@ -26,10 +26,10 @@ timestamp(){
 
 Validate(){ #function
     if [ $1 -ne 0 ]; then
-        echo -e "${2}..${R}FAILED${N}" | tee -a $log_file #tee is used to display logs on scree as well as sloring in log file
+        echo -e "$(timestamp) [ERROR] ${2}..${R}FAILED${N}" | tee -a $log_file #tee is used to display logs on scree as well as sloring in log file
         exit 1
     else
-        echo -e "${2}...${G}SUCCESS${N}" | tee -a $log_file
+        echo -e "$(timestamp) [INFO] ${2}...${G}SUCCESS${N}" | tee -a $log_file
     fi
 }
 
@@ -81,11 +81,16 @@ Validate $? "Moving Shipping.Jar file"
 dnf install mysql -y &>> $log_file
 Validate $? "Installing Mysql client"
 
-mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
-Validate $? "Loading shipping data"
+count=$(mysql -h mysql.devopspractice.store -u root -pRoboShop@1 -N -B -e "SELECT COUNT(*) FROM cities.cities;")
 
-#mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
-#Validate $? "Moving Shipping.Jar file"
+if [ -Z "$count" ] || [ "$count" -eq 0 ]: then
+    mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
+    Validate $? "Loading shipping data"
+else 
+    echo -e "$(timestamp) [INFO] Master data alredy loaded....${Y}SKIPPING${N}"
+
+mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
+Validate $? "Creating App user"
 
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/shipping.service" &>> $log_file
 Validate $? "Shipping.service edited"
