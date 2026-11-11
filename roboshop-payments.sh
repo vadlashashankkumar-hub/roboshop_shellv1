@@ -69,9 +69,9 @@ Validate $? "Creating virual environment"
 Validate $? "Installing dependencies"
 
 
-sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/Payment.service" &>> $log_file
-Validate $? "Payment.service edited"
-cp "$script_dir/Payment.service" /etc/systemd/system/Payment.service &>> $log_file
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/payment.service" &>> $log_file
+Validate $? "payment.service edited"
+cp "$script_dir/payment.service" /etc/systemd/system/payment.service &>> $log_file
 
 systemctl daemon-reload &>> $log_file
 systemctl enable Payment &>> $log_file
