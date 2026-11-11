@@ -80,7 +80,7 @@ Validate $? "Enable and start payment"
 
 
 
-systemctl restart Payment &>> $log_file
-Validate $? "Restarting Payment"
+systemctl restart payment &>> $log_file
+Validate $? "Restarting payment"
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
 echo "$(timestamp) [INFO]====Script completed Execution==="| tee -a $log_file
