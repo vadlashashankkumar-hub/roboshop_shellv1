@@ -60,7 +60,7 @@ Validate $? "Unzipping payment.zip"
 
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/roboshop.conf" &>> $log_file
 Validate $? "Configuring Reverse Proxy"
-cp "$script_dir/roboshop.conf" /etc/systemd/system/roboshop.conf &>> $log_file
+cp "$script_dir/roboshop.conf" /etc/nginx/default.d/roboshop.conf &>> $log_file
 
 nginx -t
 systemctl restart nginx
