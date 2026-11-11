@@ -81,8 +81,8 @@ Validate $? "Moving Shipping.Jar file"
 dnf install mysql -y &>> $log_file
 Validate $? "Installing Mysql client"
 
-#mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
-#Validate $? "Loading shipping data"
+mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/master-data.sql
+Validate $? "Loading shipping data"
 
 #mysql -h "mysql.$domain_name" -uroot -pRoboShop@1 < /app/db/app-user.sql
 #Validate $? "Moving Shipping.Jar file"
